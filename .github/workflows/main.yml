@@ -1,6 +1,9 @@
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Generate build tools for Windows Server 2022
