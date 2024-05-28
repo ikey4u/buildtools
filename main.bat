@@ -19,4 +19,4 @@ curl.exe -LO https://github.com/ip7z/7zip/releases/download/22.01/7z2201.exe
 
 xcopy /E "%ProgramFiles(x86)%\Windows Kits" %CD%\ms_buildtools\2022\ >NUL
 
-"%CD%\7z\7z.exe" -tzip ms_buildtools.zip %CD%\ms_buildtools >NUL
+"%CD%\7z\7z.exe" a -tzip ms_buildtools.zip %CD%\ms_buildtools >NUL
