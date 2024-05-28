@@ -1,20 +1,30 @@
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Generate build tools for Windows Server 2022
     runs-on: windows-2022
     steps:
-      - name: Checkout Files
+      - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: run build tools
+      - name: Run build tools
         shell: cmd
         run: |
           cmd /c "%GITHUB_WORKSPACE%\main.bat"
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+      - name: Get current datetime
+        run: |
+          $NOW=& Get-Date -format yyyyMMdd.HHMM
+          echo "NOW=$NOW" >> $env:GITHUB_ENV
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ms_buildtools
-          path: |
-            ms_buildtools.zip
+          tag_name: "ms_buildtools_${{env.NOW}}"
+          files: |
+            "ms_buildtools.zip"
+            "ms_buildtools_sdk.zip"
