@@ -17,6 +17,6 @@ start /WAIT "" vs_buildtools.exe --nocache --quiet --wait ^
 curl.exe -LO https://github.com/ip7z/7zip/releases/download/22.01/7z2201.exe
 7z2201.exe /S /D="%CD%\7z"
 
-xcopy /E "%ProgramFiles(x86)%\Windows Kits" %CD%\ms_buildtools\2022\
+xcopy /E "%ProgramFiles(x86)%\Windows Kits" %CD%\ms_buildtools\2022\ >NUL
 
-"%CD%\7z\7z.exe" -tzip ms_buildtools.zip %CD%\ms_buildtools
+"%CD%\7z\7z.exe" -tzip ms_buildtools.zip %CD%\ms_buildtools >NUL
