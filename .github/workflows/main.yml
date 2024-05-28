@@ -6,14 +6,21 @@ jobs:
     name: Generate build tools for Windows Server 2022
     runs-on: windows-2022
     steps:
-      - name: Checkout Files
+      - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: run build tools
+      - name: Run build tools
         shell: cmd
         run: |
           cmd /c "%GITHUB_WORKSPACE%\main.bat"
+      - name: Get current datetime
+        run: |
+          $NOW=& Get-Date -format yyyyMMdd.HHMM
+          echo "NOW=$NOW" >> $env:GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: "ms_buildtools_${{env.NOW}}"
           files: |
             ms_buildtools.zip
