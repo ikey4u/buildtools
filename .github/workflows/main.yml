@@ -17,7 +17,7 @@ jobs:
           cmd /c "%GITHUB_WORKSPACE%\main.bat"
       - name: Get current datetime
         run: |
-          $NOW=& Get-Date -format yyyyMMdd.HHMM
+          $NOW=& Get-Date -format yyyyMMdd_HHMM
           echo "NOW=$NOW" >> $env:GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -26,5 +26,5 @@ jobs:
         with:
           tag_name: "ms_buildtools_${{env.NOW}}"
           files: |
-            "ms_buildtools.zip"
-            "ms_buildtools_sdk.zip"
+            ms_buildtools.zip
+            ms_buildtools_sdk.zip
