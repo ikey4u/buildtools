@@ -18,45 +18,19 @@ pub fn request<S1: AsRef<str>, S2: AsRef<str>>(url: S1, proxy: Option<S2>) -> Re
 }
 
 fn main() -> Result<()> {
-    // download visual studio installer
-    let url = "https://aka.ms/vs/17/release/vs_buildtools.exe";
-    let resp = request(url, None::<&str>).context(format!("download {url}"))?;
-    let mut f = File::create("vs_buildtools.exe")?;
-    f.write_all(&resp.bytes()?)?;
-
-    // install visual studio to `ms_buildtools` using installer
-    let cwd = std::env::current_dir()?;
-    let install_dir = cwd.join("ms_buildtools");
-    let mut cmd = r#"cmd /c start /WAIT "" vs_buildtools.exe"#.to_string();
-    cmd += format!(" --installPath {}", install_dir.join("2022").display()).as_str();
-    cmd += [
-        "",
-        "--nocache --quiet --wait",
-        "--add Microsoft.VisualStudio.Workload.VCTools",
-        "--add Microsoft.Component.MSBuild",
-        "--add Microsoft.VisualStudio.Component.Roslyn.Compiler",
-        "--add Microsoft.VisualStudio.Component.TextTemplating",
-        "--add Microsoft.VisualStudio.Component.VC.CoreIde",
-        "--add Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
-        "--add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core",
-        "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
-        "--add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Win81",
-        "--add Microsoft.VisualStudio.Component.Windows10SDK.19041",
-    ]
-    .join(" ")
-    .as_str();
-    println!("execute command: {cmd}");
-    snippet::cmd::CmdBuilder::new(cmd)?
+    let cwd = if let Ok(p) = std::env::var("GITHUB_WORKSPACE") {
+        Path::new(&p).to_path_buf()
+    } else {
+        std::env::current_dir()?
+    };
+    snippet::cmd::CmdBuilder::new("cmd /c main.bat")?
         .stream(true)
+        .cwd(&cwd)
         .build()
         .run()?;
 
-    // copy `Windows Kits` directory into `ms_buildtools`
-    let windows_kits_dir = Path::new(&std::env::var("ProgramFiles(x86)")?).join("Windows Kits");
-    let options = fs_extra::dir::CopyOptions::new().overwrite(true);
-    fs_extra::copy_items(&[windows_kits_dir], &install_dir, &options)?;
-
     // remove non-interested SDKs
+    let install_dir = cwd.join("ms_buildtools");
     let sdk_version = "10.0.19041.0";
     let (tx, rx) = std::sync::mpsc::channel();
     walkdir::WalkDir::new(&install_dir)
