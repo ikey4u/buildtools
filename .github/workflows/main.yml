@@ -11,20 +11,29 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Run build tools
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Create visual studio installation
         shell: cmd
         run: |
-          cmd /c "%GITHUB_WORKSPACE%\main.bat"
+          cd "%GITHUB_WORKSPACE%"
+          cargo r -r
       - name: Get current datetime
         run: |
-          $NOW=& Get-Date -format yyyyMMdd.HHMM
+          $NOW=& Get-Date -format yyyyMMdd_HHMM
           echo "NOW=$NOW" >> $env:GITHUB_ENV
-      - name: Release
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ms_buildtools.zip
+          path: |
+            ms_buildtools.zip
+          compression-level: 0
+      - name: Release artifacts
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: "ms_buildtools_${{env.NOW}}"
           files: |
-            "ms_buildtools.zip"
-            "ms_buildtools_sdk.zip"
+            ms_buildtools.zip
