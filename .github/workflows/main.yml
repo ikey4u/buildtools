@@ -17,7 +17,7 @@ jobs:
         shell: cmd
         run: |
           cd "%GITHUB_WORKSPACE%"
-          cargo r -r
+          cargo r -r -- --compress
       - name: Get current datetime
         run: |
           $NOW=& Get-Date -format yyyyMMdd_HHMM
@@ -27,7 +27,7 @@ jobs:
         with:
           name: ms_buildtools
           path: |
-            ms_buildtools
+            ms_buildtools.zip
       - name: Release artifacts
         uses: softprops/action-gh-release@v2
         env:
