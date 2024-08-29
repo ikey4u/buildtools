@@ -44,15 +44,12 @@ fn main() -> Result<()> {
 
     // install visual studio to `ms_buildtools` using installer
     let install_dir = cwd.join("ms_buildtools");
-    let mut cmd = "vs_buildtools.exe".to_string();
-    cmd += format!(
-        "vs_buildtools.exe --installPath {}",
-        install_dir.join("2022").display()
-    )
-    .as_str();
-    cmd += [
-        "",
-        "--nocache --quiet --wait",
+    let cmd = [
+        "vs_buildtools.exe",
+        "--nocache",
+        "--quiet",
+        "--wait",
+        &format!("--installPath {}", install_dir.join("2022").display()),
         "--add Microsoft.VisualStudio.Workload.VCTools",
         "--add Microsoft.Component.MSBuild",
         "--add Microsoft.VisualStudio.Component.Roslyn.Compiler",
@@ -64,8 +61,7 @@ fn main() -> Result<()> {
         "--add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Win81",
         "--add Microsoft.VisualStudio.Component.Windows10SDK.19041",
     ]
-    .join(" ")
-    .as_str();
+    .join(" ");
     snippet::cmd::CmdBuilder::new(&cmd)?
         .stream(true)
         .build()
