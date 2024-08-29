@@ -27,8 +27,7 @@ jobs:
         with:
           name: ms_buildtools.zip
           path: |
-            ms_buildtools.zip
-          compression-level: 0
+            ms_buildtools
       - name: Release artifacts
         uses: softprops/action-gh-release@v2
         env:
@@ -36,4 +35,4 @@ jobs:
         with:
           tag_name: "ms_buildtools_${{env.NOW}}"
           files: |
-            ms_buildtools.zip
+            ms_buildtools
