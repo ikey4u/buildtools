@@ -25,7 +25,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ms_buildtools.zip
+          name: ms_buildtools
           path: |
             ms_buildtools
       - name: Release artifacts
