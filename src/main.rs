@@ -135,6 +135,22 @@ fn main() -> Result<()> {
         }
     }
 
+    // remove non-interested directories
+    for dirs in [
+        "Windows Kits/10/Windows Performance Toolkit",
+        "Windows Kits/10/Testing",
+        "Windows Kits/10/References",
+        "2022/Common7/IDE/CommonExtensions",
+        "2022/Common7/IDE/Extensions",
+    ] {
+        let mut p = install_dir.clone();
+        for dir in dirs.split('/') {
+            p = p.join(dir);
+        }
+        println!("remove directory: {}", p.display());
+        _ = std::fs::remove_dir_all(p);
+    }
+
     // compress `ms_buildtools` directory
     if cli.compress {
         let ms_buildtool_buf = snippet::zip::pack(&install_dir)?;
