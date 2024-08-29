@@ -42,6 +42,11 @@ fn main() -> Result<()> {
     let vs_buildtools = cwd.join("vs_buildtools.exe");
     let mut f = File::create(&vs_buildtools)?;
     f.write_all(&resp.bytes()?)?;
+    // we should drop file explicitly here to fix following Windows error
+    //
+    //     The process cannot access the file because it is being used by another process. (os error 32)
+    //
+    drop(f);
 
     // install visual studio to `ms_buildtools` using installer
     let install_dir = cwd.join("ms_buildtools");
