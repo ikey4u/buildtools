@@ -39,13 +39,14 @@ fn main() -> Result<()> {
     // download visual studio installer
     let url = "https://aka.ms/vs/17/release/vs_buildtools.exe";
     let resp = request(url, None::<&str>).context(format!("download {url}"))?;
-    let mut f = File::create("vs_buildtools.exe")?;
+    let vs_buildtools = cwd.join("vs_buildtools.exe");
+    let mut f = File::create(&vs_buildtools)?;
     f.write_all(&resp.bytes()?)?;
 
     // install visual studio to `ms_buildtools` using installer
     let install_dir = cwd.join("ms_buildtools");
     let cmd = [
-        "vs_buildtools.exe",
+        &format!("{}", vs_buildtools.display()),
         "--nocache",
         "--quiet",
         "--wait",
