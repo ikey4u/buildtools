@@ -35,4 +35,4 @@ jobs:
         with:
           tag_name: "ms_buildtools_${{env.NOW}}"
           files: |
-            ms_buildtools
+            ms_buildtools.zip
