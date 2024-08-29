@@ -1346,7 +1346,7 @@ checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
 [[package]]
 name = "snippet"
 version = "0.1.0"
-source = "git+https://github.com/ikey4u/snippet.git?rev=8776a296237f7de5eccb0dc060fa07ca35260376#8776a296237f7de5eccb0dc060fa07ca35260376"
+source = "git+https://github.com/ikey4u/snippet.git?rev=6f8bb22872b64bf582792f4d614bf5f19e626ee4#6f8bb22872b64bf582792f4d614bf5f19e626ee4"
 dependencies = [
  "anyhow",
  "shlex",
