@@ -10,6 +10,7 @@ use reqwest::blocking::Response;
 pub type Result<T> = anyhow::Result<T, anyhow::Error>;
 
 #[derive(Parser)]
+#[clap(author, version, verbatim_doc_comment, long_about = None, arg_required_else_help(true))]
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
@@ -51,7 +52,9 @@ fn main() -> Result<()> {
         Some(Commands::Vs2022 { compress }) => {
             crate::vs2022::download(cwd, *compress)?;
         }
-        Some(Commands::Vs2013) => {}
+        Some(Commands::Vs2013) => {
+            crate::vs2013::create(cwd)?;
+        }
         None => {}
     }
     Ok(())
