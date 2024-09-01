@@ -17,7 +17,7 @@ jobs:
         shell: cmd
         run: |
           cd "%GITHUB_WORKSPACE%"
-          cargo r -r -- --compress
+          cargo r -r -- vs2022 --compress
       - name: Get current datetime
         run: |
           $NOW=& Get-Date -format yyyyMMdd_HHMM
