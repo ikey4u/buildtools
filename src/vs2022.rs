@@ -41,7 +41,7 @@ pub fn download<P: AsRef<Path>>(location: P, compress: bool) -> Result<()> {
         "--add Microsoft.VisualStudio.Component.Windows10SDK.19041",
     ]
     .join(" ");
-    snippet::cmd::CmdBuilder::new(&cmd)?
+    zsnip::cmd::CmdBuilder::new(&cmd)?
         .stream(true)
         .build()
         .run()
@@ -126,7 +126,7 @@ pub fn download<P: AsRef<Path>>(location: P, compress: bool) -> Result<()> {
 
     // compress `ms_buildtools` directory
     if compress {
-        let ms_buildtool_buf = snippet::zip::pack(&install_dir)?;
+        let ms_buildtool_buf = zsnip::zip::pack(&install_dir)?;
         let mut f = File::create(location.join("ms_buildtools.zip"))?;
         f.write_all(&ms_buildtool_buf)?;
     }
