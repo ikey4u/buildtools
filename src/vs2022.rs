@@ -5,6 +5,28 @@ use rayon::iter::{ParallelBridge, ParallelIterator};
 
 use crate::Result;
 
+const MSDEV_SCRIPT: &str = r#"
+@echo off
+
+set "SCRIPT_DIR=%~dp0."
+
+if "%1" == "x86" (
+    REM x86 Native Tools Command Prompt for VS 2022
+    call "%SCRIPT_DIR%\2022\VC\Auxiliary\Build\vcvars32.bat"
+) else if "%1" == "cx86" (
+    REM x64_x86 Cross Tools Command Prompt for VS 2022
+    call "%SCRIPT_DIR%\2022\VC\Auxiliary\Build\vcvarsamd64_x86.bat"
+) else if "%1" == "cx64" (
+    REM x86_x64 Cross Tools Command Prompt for VS 2022
+    call "%SCRIPT_DIR%\2022\VC\Auxiliary\Build\vcvarsx86_amd64.bat"
+) else (
+    REM x64 Native Tools Command Prompt for VS 2022
+    call "%SCRIPT_DIR%\2022\VC\Auxiliary\Build\vcvars64.bat"
+)
+
+exit /b 0
+"#;
+
 pub fn download<P: AsRef<Path>>(location: P, compress: bool) -> Result<()> {
     let location = location.as_ref();
 
@@ -123,6 +145,10 @@ pub fn download<P: AsRef<Path>>(location: P, compress: bool) -> Result<()> {
         println!("remove directory: {}", p.display());
         _ = std::fs::remove_dir_all(p);
     }
+
+
+    let mut f = File::create(install_dir.join("msdev.bat"))?;
+    f.write_all(MSDEV_SCRIPT.as_bytes())?;
 
     // compress `ms_buildtools` directory
     if compress {
