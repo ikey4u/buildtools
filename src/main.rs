@@ -1,5 +1,6 @@
 mod vs2013;
 mod vs2022;
+mod vsenv;
 
 use std::path::Path;
 

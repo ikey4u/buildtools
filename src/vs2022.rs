@@ -150,6 +150,22 @@ pub fn download<P: AsRef<Path>>(location: P, compress: bool) -> Result<()> {
     let mut f = File::create(install_dir.join("msdev.bat"))?;
     f.write_all(MSDEV_SCRIPT.as_bytes())?;
 
+    let lnkdir = r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2022\Visual Studio Tools\VC";
+    match crate::vsenv::get(lnkdir) {
+        Ok(mut mp) => {
+            for (name, envs) in mp.iter_mut() {
+                envs.sort_by_key(|x| x.0.clone());
+                let mut f = File::create(install_dir.join(format!("{name}.env")))?;
+                for env in envs {
+                    _ = f.write_all(format!("{}={}\n", env.0, env.1).as_bytes());
+                }
+            }
+        }
+        Err(e) => {
+            println!("get visual studio environment variables failed: {e:?}");
+        }
+    }
+
     // compress `ms_buildtools` directory
     if compress {
         let ms_buildtool_buf = zsnip::zip::pack(&install_dir)?;
