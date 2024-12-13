@@ -13,7 +13,13 @@ IF DEFINED __MSDEV__ (
 )
 
 set "SCRIPT_DIR=%~dp0."
+
 setlocal
+set "WindowsSdkDir=%SCRIPT_DIR%\Windows Kits\10"
+set "WindowsSDKVersion=10.0.19041.0"
+set "VCToolsVersion=14.42.34433"
+set "VSINSTALLDIR=%SCRIPT_DIR%\2022"
+set "VCINSTALLDIR=%SCRIPT_DIR%\2022\VC"
 set "__MSDEV__=ON"
 if "%1" == "x86" (
     REM x86 Native Tools Command Prompt for VS 2022
@@ -29,41 +35,15 @@ if "%1" == "x86" (
     exit /b 0
 ) else (
     REM x64 Native Tools Command Prompt for VS 2022
-    set "PROMPT=MSDEV X64 -> "
-    set "DevEnvDir=%SCRIPT_DIR%\2022\Common7\IDE\"
-    set "EXTERNAL_INCLUDE=%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\include;%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\ATLMFC\include;%SCRIPT_DIR%\2022\VC\Auxiliary\VS\include;%SCRIPT_DIR%\Windows Kits\10\include\10.0.19041.0\ucrt;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\um;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\shared;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\winrt;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\cppwinrt;%SCRIPT_DIR%\Windows Kits\NETFXSDK\4.8\include\um"
-    set "ExtensionSdkDir=%SCRIPT_DIR%\Windows Kits\10\Extension SDKs"
-    set "INCLUDE=%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\include;%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\ATLMFC\include;%SCRIPT_DIR%\2022\VC\Auxiliary\VS\include;%SCRIPT_DIR%\Windows Kits\10\include\10.0.19041.0\ucrt;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\um;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\shared;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\winrt;%SCRIPT_DIR%\Windows Kits\10\\include\10.0.19041.0\\cppwinrt;%SCRIPT_DIR%\Windows Kits\NETFXSDK\4.8\include\um"
-    set "LIB=%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\ATLMFC\lib\x64;%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\lib\x64;%SCRIPT_DIR%\Windows Kits\NETFXSDK\4.8\lib\um\x64;%SCRIPT_DIR%\Windows Kits\10\lib\10.0.19041.0\ucrt\x64;%SCRIPT_DIR%\Windows Kits\10\\lib\10.0.19041.0\\um\x64"
-    set "LIBPATH=%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\ATLMFC\lib\x64;%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\lib\x64;%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\lib\x86\store\references;%SCRIPT_DIR%\Windows Kits\10\UnionMetadata\10.0.19041.0;%SCRIPT_DIR%\Windows Kits\10\References\10.0.19041.0"
-    set "Path=%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\bin\HostX64\x64;%SCRIPT_DIR%\2022\Common7\IDE\VC\VCPackages;%SCRIPT_DIR%\2022\Common7\IDE\CommonExtensions\Microsoft\TestWindow;%SCRIPT_DIR%\2022\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;%SCRIPT_DIR%\2022\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\;C:\Program Files (x86)\HTML Help Workshop;%SCRIPT_DIR%\2022\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools;%SCRIPT_DIR%\2022\Team Tools\DiagnosticsHub\Collector;%SCRIPT_DIR%\2022\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;%SCRIPT_DIR%\Windows Kits\10\bin\10.0.19041.0\\x64;%SCRIPT_DIR%\Windows Kits\10\bin\\x64;%SCRIPT_DIR%\2022\\MSBuild\Current\Bin\amd64;%SCRIPT_DIR%\2022\Common7\IDE\;%SCRIPT_DIR%\2022\Common7\Tools\;%SCRIPT_DIR%\2022\VC\Tools\Llvm\x64\bin;%SCRIPT_DIR%\2022\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;%SCRIPT_DIR%\2022\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;%SCRIPT_DIR%\2022\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;%SCRIPT_DIR%\2022\VC\vcpkg;%PATH%"
-    set "Platform=x64"
-    set "UCRTVersion=10.0.19041.0"
-    set "UniversalCRTSdkDir=%SCRIPT_DIR%\Windows Kits\10\"
-    set "VCIDEInstallDir=%SCRIPT_DIR%\2022\Common7\IDE\VC\"
-    set "VCINSTALLDIR=%SCRIPT_DIR%\2022\VC\"
-    set "VCPKG_INSTALLATION_ROOT=C:\vcpkg"
-    set "VCPKG_ROOT=%SCRIPT_DIR%\2022\VC\vcpkg"
-    set "VCToolsInstallDir=%SCRIPT_DIR%\2022\VC\Tools\MSVC\14.42.34433\"
-    set "VCToolsRedistDir=%SCRIPT_DIR%\2022\VC\Redist\MSVC\14.42.34433\"
-    set "VCToolsVersion=14.42.34433"
-    set "VS170COMNTOOLS=%SCRIPT_DIR%\2022\Common7\Tools\"
+    set "PROMPT=MSDEV X64 @ $P$_-> "
     set "VSCMD_ARG_HOST_ARCH=x64"
     set "VSCMD_ARG_TGT_ARCH=x64"
-    set "VSCMD_ARG_app_plat=Desktop"
-    set "VSCMD_VER=17.12.2"
-    set "VSINSTALLDIR=%SCRIPT_DIR%\2022\"
-    set "VSSDK150INSTALL=%SCRIPT_DIR%\2022\VSSDK"
-    set "VSSDKINSTALL=%SCRIPT_DIR%\2022\VSSDK"
-    set "VisualStudioVersion=17.0"
-    set "WindowsLibPath=%SCRIPT_DIR%\Windows Kits\10\UnionMetadata\10.0.19041.0;%SCRIPT_DIR%\Windows Kits\10\References\10.0.19041.0"
-    set "WindowsSDKLibVersion=10.0.19041.0\"
-    set "WindowsSDKVersion=10.0.19041.0\"
-    set "WindowsSdkBinPath=%SCRIPT_DIR%\Windows Kits\10\bin\"
-    set "WindowsSdkDir=%SCRIPT_DIR%\Windows Kits\10\"
-    set "WindowsSdkVerBinPath=%SCRIPT_DIR%\Windows Kits\10\bin\10.0.19041.0\"
+    set "INCLUDE=%VCINSTALLDIR%\Tools\MSVC\%VCToolsVersion%\include;%VCINSTALLDIR%\Auxiliary\VS\include;%WindowsSdkDir%\include\%WindowsSDKVersion%\ucrt;%WindowsSdkDir%\include\%WindowsSDKVersion%\um;%WindowsSdkDir%\include\%WindowsSDKVersion%\shared;%WindowsSdkDir%\include\%WindowsSDKVersion%\winrt;%WindowsSdkDir%\include\%WindowsSDKVersion%\cppwinrt"
+    set "LIB=%VCINSTALLDIR%\Tools\MSVC\%VCToolsVersion%\lib\x64;%WindowsSdkDir%\lib\%WindowsSDKVersion%\ucrt\x64;%WindowsSdkDir%\lib\%WindowsSDKVersion%\um\x64"
+    set "LIBPATH=%VCINSTALLDIR%\Tools\MSVC\%VCToolsVersion%\lib\x64;%VCINSTALLDIR%\Tools\MSVC\%VCToolsVersion%\lib\x64\store\references;%WindowsSdkDir%\UnionMetadata\%WindowsSDKVersion%;%WindowsSdkDir%\References\%WindowsSDKVersion%"
+    set "PATH=%VCINSTALLDIR%\Tools\MSVC\%VCToolsVersion%\bin\HostX64\x64;%WindowsSdkDir%\bin\%WindowsSDKVersion%\x64;%VSINSTALLDIR%\MSBuild\Current\Bin\amd64;%VSINSTALLDIR%\Common7\IDE\;%VSINSTALLDIR%\Common7\Tools\;%VCINSTALLDIR%\Tools\Llvm\x64\bin;%PATH%"
 )
-cmd
+cmd /k
 endlocal
 "#;
 
