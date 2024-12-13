@@ -171,13 +171,46 @@ pub fn download<P: AsRef<Path>>(location: P, compress: bool) -> Result<()> {
     f.write_all(MSDEV_SCRIPT.as_bytes())?;
 
     let lnkdir = r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2022\Visual Studio Tools\VC";
+    let envdir = install_dir.join("vsenv");
+    std::fs::create_dir_all(&envdir)?;
     match crate::vsenv::get(lnkdir) {
         Ok(mut mp) => {
             for (name, envs) in mp.iter_mut() {
+                // filter out name such as `x86_x64 Cross Tools Command Prompt for VS 2022 (2)`
+                if name.ends_with(")") {
+                    continue;
+                }
                 envs.sort_by_key(|x| x.0.clone());
-                let mut f = File::create(install_dir.join(format!("{name}.env")))?;
+                let mut f = File::create(envdir.join(format!("{name}.txt")))?;
                 for env in envs {
-                    _ = f.write_all(format!("{}={}\n", env.0, env.1).as_bytes());
+                    if env.0.starts_with("GITHUB_") {
+                        continue;
+                    }
+                    if env.0.starts_with("RUNNER_") {
+                        continue;
+                    }
+                    if env.0.starts_with("CARGO") {
+                        continue;
+                    }
+                    if env.0.starts_with("RUST") {
+                        continue;
+                    }
+                    if env.0.starts_with("JAVA") {
+                        continue;
+                    }
+                    if env.0.starts_with("ANDROID") {
+                        continue;
+                    }
+                    if env.0.starts_with("GOROOT") {
+                        continue;
+                    }
+                    if env.0.starts_with("STATS_") {
+                        continue;
+                    }
+                    if env.0.starts_with("__") {
+                        continue;
+                    }
+                    _ = f.write_all(format!("set \"{}={}\"\n", env.0, env.1).as_bytes());
                 }
             }
         }
